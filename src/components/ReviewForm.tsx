@@ -21,7 +21,7 @@ export function ReviewForm() {
 
   const e = state?.errors ?? {};
   return (
-    <form action={action} className="card relative space-y-5 p-6 md:p-8" noValidate>
+    <form action={action} className="relative space-y-5 rounded-3xl border border-line bg-white p-5 shadow-[0_20px_50px_-30px_rgba(18,33,58,.3)] sm:p-8" noValidate>
       <Honeypot />
       {state && !state.ok && <FormNotice ok={false} message={state.message} />}
       <div>

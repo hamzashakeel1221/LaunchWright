@@ -30,5 +30,60 @@ h1, h2, h3, h4 { font-family: var(--font-display); color: var(--color-ink); lett
 @utility btn-ghost { @apply btn border border-white/35 text-white hover:bg-white/10; }
 @utility btn-outline { @apply btn border border-line bg-white text-ink hover:border-ink; }
 @utility card { @apply rounded-2xl border border-line bg-white; }
-@utility input { @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-body outline-none transition placeholder:text-muted/70 focus:border-flame focus:ring-2 focus:ring-flame/20; }
+@utility input { @apply w-full rounded-xl border border-line bg-white px-4 py-3.5 text-base text-body outline-none transition placeholder:text-muted/70 focus:border-flame focus:ring-2 focus:ring-flame/20; }
 @utility label { @apply mb-1.5 block text-sm font-medium text-ink; }
+
+/* ---------- Modern touches ---------- */
+html { -webkit-tap-highlight-color: transparent; }
+body { overflow-x: hidden; }
+::selection { background: rgba(255, 107, 53, 0.25); }
+
+@utility text-gradient {
+  background: linear-gradient(100deg, #ffb08f 0%, #ff6b35 60%, #ff8a5c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
+}
+@utility glass {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+@utility card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  &:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -24px rgba(18, 33, 58, 0.35); border-color: rgba(255, 107, 53, 0.45); }
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Reveal on scroll (see components/Reveal.tsx) */
+[data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+[data-reveal][data-shown="true"] { opacity: 1; transform: none; }
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 32s linear infinite; }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.animate-floaty { animation: floaty 6s ease-in-out infinite; }
+@keyframes glow { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.9; } }
+.animate-glow { animation: glow 8s ease-in-out infinite; }
+@keyframes slide-down { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.animate-slide-down { animation: slide-down 0.25s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .animate-marquee, .animate-floaty, .animate-glow { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Leave room for the phone bottom bar */
+@media (max-width: 767px) { body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }

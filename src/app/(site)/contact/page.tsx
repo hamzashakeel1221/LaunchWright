@@ -20,7 +20,7 @@ export default function ContactPage() {
           <ContactForm />
           <aside className="space-y-4">
             {items.map((i) => (
-              <a key={i.label} href={i.href} {...(i.ext ? { target: "_blank", rel: "noopener" } : {})} className="card flex items-center gap-4 p-5 transition hover:-translate-y-0.5 hover:border-flame">
+              <a key={i.label} href={i.href} {...(i.ext ? { target: "_blank", rel: "noopener" } : {})} className="card-hover flex items-center gap-4 rounded-2xl border border-line bg-white p-5">
                 <span className={`grid h-11 w-11 flex-none place-items-center rounded-xl text-white ${i.color}`}>{i.icon}</span>
                 <span className="min-w-0">
                   <span className="block text-xs font-semibold tracking-widest text-muted uppercase">{i.label}</span>
