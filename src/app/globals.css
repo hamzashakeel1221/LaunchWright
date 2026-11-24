@@ -13,8 +13,8 @@
   --color-line: #e3e7ee;
   --color-body: #1b2433;
   --color-muted: #5b6677;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-sora), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Inter Variable", ui-sans-serif, sans-serif;
 }
 
 html { scroll-behavior: smooth; }

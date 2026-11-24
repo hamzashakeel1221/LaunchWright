@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Sora } from "next/font/google";
+import "@fontsource-variable/inter";
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
 import { site } from "@/lib/site";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const sora = Sora({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-sora" });
 
 export const metadata: Metadata = {
   title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
+    <html lang="en">
       <body className="font-sans leading-relaxed">{children}</body>
     </html>
   );

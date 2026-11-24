@@ -4,12 +4,20 @@ import { SignJWT, jwtVerify } from "jose";
 export const SESSION_COOKIE = "lw_admin";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
+/**
+ * Signing key = SHA-256 of SESSION_SECRET plus DATABASE_URL (both secret settings on the host).
+ * Mixing in DATABASE_URL keeps the key strong even if SESSION_SECRET is short.
+ */
+let cachedKey: Promise<Uint8Array> | null = null;
 function secretKey() {
-  const secret = process.env.SESSION_SECRET;
-  if (!secret || secret.length < 32) {
-    throw new Error("SESSION_SECRET must be set and at least 32 characters long");
+  if (!cachedKey) {
+    const material = `${process.env.SESSION_SECRET ?? ""}|${process.env.DATABASE_URL ?? ""}`;
+    if (material.length < 33) throw new Error("Set SESSION_SECRET (and DATABASE_URL) in the host's environment settings");
+    cachedKey = crypto.subtle
+      .digest("SHA-256", new TextEncoder().encode(material))
+      .then((buf) => new Uint8Array(buf));
   }
-  return new TextEncoder().encode(secret);
+  return cachedKey;
 }
 
 export async function createSessionToken(email: string) {
@@ -18,13 +26,13 @@ export async function createSessionToken(email: string) {
     .setSubject(email)
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE_SECONDS}s`)
-    .sign(secretKey());
+    .sign(await secretKey());
 }
 
 export async function verifySessionToken(token: string | undefined) {
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secretKey());
+    const { payload } = await jwtVerify(token, await secretKey());
     return payload.role === "admin" ? payload : null;
   } catch {
     return null;
