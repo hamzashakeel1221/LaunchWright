@@ -15,6 +15,8 @@ function cleanDatabaseUrl(raw: string | undefined): string {
   return v;
 }
 
+const SYSTEM_DATABASES = new Set(["sys", "mysql", "information_schema", "performance_schema", "metrics_schema"]);
+
 function createClient(): { client: PrismaClient; viaAdapter: boolean } {
   const value = cleanDatabaseUrl(process.env.DATABASE_URL);
   let url: URL | null = null;
@@ -24,8 +26,12 @@ function createClient(): { client: PrismaClient; viaAdapter: boolean } {
     url = null;
   }
   if (url && url.hostname.endsWith("tidbcloud.com")) {
+    // TiDB's "Connect" dialog can default to a system database (e.g. "sys"),
+    // which never holds app data; the site's tables live in "test".
+    let dbName = decodeURIComponent(url.pathname.replace(/^\//, ""));
+    if (!dbName || SYSTEM_DATABASES.has(dbName.toLowerCase())) dbName = "test";
     // The serverless driver wants plain mysql://user:pass@host/db.
-    const clean = `mysql://${url.username}:${url.password}@${url.hostname}${url.pathname}`;
+    const clean = `mysql://${url.username}:${url.password}@${url.hostname}/${encodeURIComponent(dbName)}`;
     return { client: new PrismaClient({ adapter: new PrismaTiDBCloud({ url: clean }) }), viaAdapter: true };
   }
   if (typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers") {
