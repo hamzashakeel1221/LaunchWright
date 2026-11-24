@@ -3,7 +3,7 @@ import { getPublishedProjects, safe } from "@/lib/queries";
 import { ProjectCard } from "@/components/ProjectCard";
 import { PageHero } from "@/components/PageHero";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Projects", description: "Websites designed and built by Launchwright." };
 
 export default async function ProjectsPage() {

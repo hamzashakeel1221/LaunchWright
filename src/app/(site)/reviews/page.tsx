@@ -5,7 +5,7 @@ import { ReviewForm } from "@/components/ReviewForm";
 import { PageHero } from "@/components/PageHero";
 import { Stars } from "@/components/Stars";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Reviews", description: "Reviews of Launchwright, and a form to leave your own." };
 
 export default async function ReviewsPage() {

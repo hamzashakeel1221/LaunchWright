@@ -9,7 +9,7 @@ import { DeviceMockup } from "@/components/DeviceMockup";
 import { Check, Code, Globe, Mail, Pen, Phone, Rocket, Shield, Test, WhatsApp, Wrench } from "@/components/Icons";
 import { site, whatsappLink } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const steps = [
   { icon: Pen, title: "Design", text: "We plan your pages and design a look that fits your brand. You approve it before we build." },

@@ -5,7 +5,7 @@ import { getProjectBySlug, safe } from "@/lib/queries";
 import { ProjectCover } from "@/components/ProjectCard";
 import { External } from "@/components/Icons";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
