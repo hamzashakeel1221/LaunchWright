@@ -25,16 +25,16 @@ Built with **Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · MySQL (P
 npm install
 cp .env.example .env          # then fill in the values
 npm run hash-password -- "your-strong-password"   # paste the output into ADMIN_PASSWORD_HASH
-npm run db:push               # creates the tables
+npx prisma migrate deploy     # creates the tables
 npm run dev                   # http://localhost:3000  (admin at /admin)
 ```
 
 ## Deploy for free
 
 1. **Database:** create a free MySQL-compatible cluster on [TiDB Cloud](https://tidbcloud.com) (Serverless/Starter). Create a database named `launchwright` and copy the connection string, adding `?sslaccept=strict`.
-2. From your computer, with `DATABASE_URL` set to that string, run `npm run db:push` once to create the tables.
+2. Nothing else to do for the database: Netlify creates the tables automatically on each deploy (`prisma migrate deploy`).
 3. **Website:** on [Netlify](https://app.netlify.com), choose *Add new site → Import from GitHub* and pick this repository. Netlify detects Next.js automatically.
-4. In Netlify *Site configuration → Environment variables*, add `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` and `SESSION_SECRET`, then redeploy.
+4. In Netlify *Site configuration → Environment variables*, add `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (or `ADMIN_PASSWORD_HASH`) and `SESSION_SECRET`, then redeploy.
 5. When you buy a domain, add it under *Domain management* in Netlify.
 
 Public pages are cached and refreshed automatically whenever you change something in the admin panel, so visitors get fast pages without waiting for the database.
