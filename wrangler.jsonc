@@ -14,5 +14,7 @@
       "service": "launchwright"
     }
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Keep variables and secrets set in the Cloudflare dashboard on every deploy.
+  "keep_vars": true
 }
