@@ -9,7 +9,8 @@
     "lint": "eslint",
     "hash-password": "tsx scripts/hash-password.ts",
     "postinstall": "prisma generate",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "netlify-build": "prisma migrate deploy && prisma generate && next build"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

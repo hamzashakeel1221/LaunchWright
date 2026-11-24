@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { verifyPassword } from "@/lib/password";
+import { safeEqual, verifyPassword } from "@/lib/password";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
 
 /* ---------- Auth ---------- */
@@ -21,7 +21,12 @@ export async function login(_prev: { error?: string; email?: string } | null, fo
   if (recent.length >= 5) return { error: "Too many attempts. Please wait 15 minutes and try again.", email };
 
   const adminEmail = (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
-  const ok = !!adminEmail && email === adminEmail && verifyPassword(password, process.env.ADMIN_PASSWORD_HASH);
+  const hash = process.env.ADMIN_PASSWORD_HASH;
+  const plain = process.env.ADMIN_PASSWORD; // simpler option: password kept only in the host's secret settings
+  const ok =
+    !!adminEmail &&
+    email === adminEmail &&
+    (hash ? verifyPassword(password, hash) : !!plain && plain.length >= 10 && safeEqual(password, plain));
   if (!ok) {
     recent.push(now);
     loginAttempts.set(email, recent);
