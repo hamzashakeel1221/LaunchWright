@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique @db.VarChar(160)
+  title       String   @db.VarChar(160)
+  category    String   @db.VarChar(80)
+  description String   @db.Text
+  liveUrl     String?  @db.VarChar(500)
+  isSample    Boolean  @default(true)
+  published   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  imageId     Int?     @unique
+  image       Image?   @relation(fields: [imageId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  mimeType  String   @db.VarChar(60)
+  data      Bytes    @db.MediumBlob
+  createdAt DateTime @default(now())
+  project   Project?
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Review {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(100)
+  businessName String?      @db.VarChar(120)
+  rating       Int          @db.TinyInt
+  comment      String       @db.Text
+  status       ReviewStatus @default(PENDING)
+  createdAt    DateTime     @default(now())
+  reviewedAt   DateTime?
+
+  @@index([status, createdAt])
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+model ContactMessage {
+  id           Int           @id @default(autoincrement())
+  name         String        @db.VarChar(100)
+  email        String        @db.VarChar(190)
+  phone        String?       @db.VarChar(40)
+  businessName String?       @db.VarChar(120)
+  country      String?       @db.VarChar(80)
+  service      String?       @db.VarChar(80)
+  message      String        @db.Text
+  status       MessageStatus @default(NEW)
+  adminNotes   String?       @db.Text
+  createdAt    DateTime      @default(now())
+
+  @@index([status, createdAt])
+}
