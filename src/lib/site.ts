@@ -1,8 +1,8 @@
 export const site = {
-  name: "Launchwright",
+  name: "Cometfront",
   tagline: "Websites for small businesses, worldwide",
   description:
-    "Launchwright designs, develops, tests and launches professional websites for small businesses anywhere in the world, with 2 months of maintenance included.",
+    "Cometfront designs, develops, tests and launches professional websites for small businesses anywhere in the world, with 2 months of maintenance included.",
   phoneDisplay: "+92 326 5477808",
   phoneE164: "+923265477808",
   whatsapp: "923265477808",

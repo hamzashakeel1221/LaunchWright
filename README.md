@@ -1,6 +1,6 @@
-# Launchwright
+# Cometfront
 
-Website for **Launchwright**, a web design studio for small businesses worldwide.
+Website for **Cometfront**, a web design studio for small businesses worldwide.
 
 Built with **Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · MySQL (Prisma)**.
 

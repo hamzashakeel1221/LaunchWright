@@ -4,7 +4,7 @@ import { WhatsApp } from "./Icons";
 export function WhatsAppFloat() {
   return (
     <a
-      href={whatsappLink("Hi Launchwright, I'd like a website for my business.")}
+      href={whatsappLink("Hi Cometfront, I'd like a website for my business.")}
       target="_blank"
       rel="noopener"
       aria-label="Chat on WhatsApp"

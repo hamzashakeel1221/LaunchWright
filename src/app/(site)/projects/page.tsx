@@ -4,7 +4,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { PageHero } from "@/components/PageHero";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Projects", description: "Websites designed and built by Launchwright." };
+export const metadata: Metadata = { title: "Projects", description: "Websites designed and built by Cometfront." };
 
 export default async function ProjectsPage() {
   const projects = await safe(getPublishedProjects(), []);

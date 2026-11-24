@@ -6,7 +6,7 @@ import { PageHero } from "@/components/PageHero";
 import { Stars } from "@/components/Stars";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Reviews", description: "Reviews of Launchwright, and a form to leave your own." };
+export const metadata: Metadata = { title: "Reviews", description: "Reviews of Cometfront, and a form to leave your own." };
 
 export default async function ReviewsPage() {
   const [reviews, stats] = await Promise.all([safe(getApprovedReviews(), []), safe(getReviewStats(), { count: 0, average: 0 })]);

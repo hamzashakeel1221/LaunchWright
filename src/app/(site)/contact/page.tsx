@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Contact", description: "Get a free q
 
 export default function ContactPage() {
   const items = [
-    { href: whatsappLink("Hi Launchwright, I'd like a website for my business."), label: "WhatsApp", value: site.phoneDisplay, icon: <WhatsApp className="h-6 w-6" />, color: "bg-[#25D366]", ext: true },
+    { href: whatsappLink("Hi Cometfront, I'd like a website for my business."), label: "WhatsApp", value: site.phoneDisplay, icon: <WhatsApp className="h-6 w-6" />, color: "bg-[#25D366]", ext: true },
     { href: `tel:${site.phoneE164}`, label: "Phone", value: site.phoneDisplay, icon: <Phone />, color: "bg-flame" },
     { href: `mailto:${site.email}?subject=${encodeURIComponent("Website quote")}`, label: "Email", value: site.email, icon: <Mail />, color: "bg-teal" },
   ];

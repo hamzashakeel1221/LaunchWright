@@ -38,7 +38,7 @@ export function Header() {
     <>
     <header className={`sticky top-0 z-50 transition-colors duration-300 ${scrolled || open ? "bg-ink/85 shadow-[0_1px_0_rgba(255,255,255,.06)] backdrop-blur-xl" : "bg-ink"}`}>
       <nav className="wrap flex h-16 items-center justify-between md:h-18" aria-label="Main">
-        <Link href="/" aria-label="Launchwright home" onClick={() => setOpen(false)}>
+        <Link href="/" aria-label="Cometfront home" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
         <ul className="hidden items-center gap-1 lg:flex">

@@ -62,11 +62,11 @@ export default async function Home() {
               No website yet?<br className="hidden sm:block" /> <span className="text-gradient">We build it and launch it</span> for you.
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-[1.05rem] text-[#C9D3E3] sm:text-lg lg:mx-0">
-              Launchwright designs, develops, tests and launches a professional website for your business. You tell us about your business. We handle everything else.
+              Cometfront designs, develops, tests and launches a professional website for your business. You tell us about your business. We handle everything else.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link href="/contact" className="btn-primary h-14 px-7 text-base">Get a free quote →</Link>
-              <a href={whatsappLink("Hi Launchwright, I'd like a website for my business.")} target="_blank" rel="noopener" className="btn-ghost h-14 px-7 text-base">
+              <a href={whatsappLink("Hi Cometfront, I'd like a website for my business.")} target="_blank" rel="noopener" className="btn-ghost h-14 px-7 text-base">
                 <WhatsApp className="h-5 w-5" /> Chat on WhatsApp
               </a>
             </div>
@@ -263,7 +263,7 @@ export default async function Home() {
           <h2 className="mx-auto max-w-3xl text-3xl font-bold !text-white sm:text-5xl">Let&apos;s get your business online</h2>
           <p className="mx-auto mt-4 max-w-xl text-[#C9D3E3] sm:text-lg">Tell us about your business and we&apos;ll send you a free quote. WhatsApp is the fastest way to reach us.</p>
           <div className="mx-auto mt-9 grid max-w-3xl gap-3 sm:grid-cols-3">
-            <a href={whatsappLink("Hi Launchwright, I'd like a website for my business.")} target="_blank" rel="noopener" className="glass flex items-center gap-3 rounded-2xl p-4 text-left transition hover:-translate-y-1">
+            <a href={whatsappLink("Hi Cometfront, I'd like a website for my business.")} target="_blank" rel="noopener" className="glass flex items-center gap-3 rounded-2xl p-4 text-left transition hover:-translate-y-1">
               <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-[#25D366]"><WhatsApp className="h-6 w-6" /></span>
               <span><span className="block text-xs text-[#9FB0C8]">WhatsApp</span><span className="block font-semibold">{site.phoneDisplay}</span></span>
             </a>
