@@ -1,9 +1,11 @@
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 /**
  * The WebDoorstep hero: an open, glowing doorway on a doorstep, with light spilling out,
- * floating website cards and drifting particles. Plain three.js, no post-processing,
- * so it stays light enough for phones.
+ * floating website cards and drifting particles. Rendered at the screen's full resolution
+ * with smooth edges and real reflections, and it steps the resolution down on slow devices.
  */
 export type SceneHandle = { dispose: () => void; setActive: (on: boolean) => void };
 
@@ -20,7 +22,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.closePath();
 }
 
-function glowTexture(size = 128, inner = "rgba(255,190,120,1)", outer = "rgba(255,107,53,0)") {
+function glowTexture(size = 256, inner = "rgba(255,190,120,1)", outer = "rgba(255,107,53,0)") {
   const c = document.createElement("canvas");
   c.width = c.height = size;
   const ctx = c.getContext("2d")!;
@@ -36,10 +38,11 @@ function glowTexture(size = 128, inner = "rgba(255,190,120,1)", outer = "rgba(25
 }
 
 /** Mini website mockups drawn on canvases, used as textures on floating cards. */
-function cardTexture(kind: "browser" | "phone" | "stats" | "review") {
+const FONT = "'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+
+function cardTexture(kind: "browser" | "phone" | "stats" | "review", s: number, maxAniso: number) {
   const W = kind === "phone" ? 300 : kind === "review" ? 420 : 520;
   const H = kind === "phone" ? 600 : kind === "review" ? 150 : kind === "stats" ? 300 : 360;
-  const s = 2;
   const c = document.createElement("canvas");
   c.width = W * s;
   c.height = H * s;
@@ -78,7 +81,7 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review") {
     });
     bar(100, 18, 300, 20, "rgba(255,255,255,0.08)", 10);
     ctx.fillStyle = "rgba(255,255,255,0.55)";
-    ctx.font = "600 12px sans-serif";
+    ctx.font = "600 12px " + FONT;
     ctx.fillText("yourbusiness.com", 118, 33);
     // hero
     const hero = ctx.createLinearGradient(24, 60, W - 24, 200);
@@ -94,7 +97,7 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review") {
     ctx.fillStyle = orange(48, 0, 168, 0);
     ctx.fill();
     ctx.fillStyle = "#fff";
-    ctx.font = "700 12px sans-serif";
+    ctx.font = "700 12px " + FONT;
     ctx.fillText("Get a quote", 70, 189);
     // feature cards
     for (let i = 0; i < 3; i++) {
@@ -132,18 +135,18 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review") {
     ctx.fillStyle = orange(24, 0, W - 24, 0);
     ctx.fill();
     ctx.fillStyle = "#fff";
-    ctx.font = "700 16px sans-serif";
+    ctx.font = "700 16px " + FONT;
     ctx.fillText("Order now", W / 2 - 42, H - 50);
   } else if (kind === "stats") {
     ctx.fillStyle = "rgba(255,255,255,0.6)";
-    ctx.font = "600 15px sans-serif";
+    ctx.font = "600 15px " + FONT;
     ctx.fillText("New enquiries", 26, 42);
     ctx.fillStyle = "#fff";
-    ctx.font = "700 38px sans-serif";
+    ctx.font = "700 38px " + FONT;
     ctx.fillText("+184%", 26, 88);
     bar(170, 62, 74, 26, "rgba(40,200,120,0.18)", 13);
     ctx.fillStyle = "#4ade80";
-    ctx.font = "700 13px sans-serif";
+    ctx.font = "700 13px " + FONT;
     ctx.fillText("▲ growing", 180, 80);
     // chart
     const pts = [0.15, 0.22, 0.2, 0.35, 0.32, 0.5, 0.58, 0.55, 0.75, 0.9];
@@ -179,31 +182,45 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review") {
     ctx.fillStyle = orange(30, 0, 90, 0);
     ctx.fill();
     ctx.fillStyle = "#fff";
-    ctx.font = "700 26px sans-serif";
+    ctx.font = "700 26px " + FONT;
     ctx.fillText("A", 51, H / 2 + 9);
     ctx.fillStyle = "#ffb547";
-    ctx.font = "700 24px sans-serif";
+    ctx.font = "700 24px " + FONT;
     ctx.fillText("★★★★★", 108, H / 2 - 8);
     ctx.fillStyle = "rgba(255,255,255,0.75)";
-    ctx.font = "500 16px sans-serif";
+    ctx.font = "500 16px " + FONT;
     ctx.fillText("“Customers find us now!”", 108, H / 2 + 24);
   }
 
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 4;
+  t.anisotropy = maxAniso;
+  t.minFilter = THREE.LinearMipmapLinearFilter;
+  t.generateMipmaps = true;
   return { texture: t, aspect: W / H };
 }
 
 export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: boolean } = {}): SceneHandle {
   const isSmall = Math.min(window.innerWidth, window.innerHeight) < 640;
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isSmall, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmall ? 1.6 : 1.75));
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+  // Render at the screen's real resolution (phones are often 3x), so edges and text stay crisp.
+  const dpr = window.devicePixelRatio || 1;
+  let pixelRatio = Math.min(dpr, 3);
+  renderer.setPixelRatio(pixelRatio);
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  // Card artwork is drawn at up to 4x so it stays sharp on high-resolution screens.
+  const cardScale = Math.min(4, Math.max(2, Math.ceil(dpr * (isSmall ? 1 : 1.4))));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
 
   const scene = new THREE.Scene();
+  // Soft studio reflections so the metal frame, door and steps look like real materials.
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
+  scene.environment = envTex;
+  scene.environmentIntensity = 0.35;
   scene.fog = new THREE.Fog(0x05080f, 10, 26);
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
 
@@ -232,8 +249,8 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   world.add(door);
 
   const frameMat = track(new THREE.MeshStandardMaterial({ color: 0x151b2b, metalness: 0.75, roughness: 0.28 }));
-  const frameGeoV = track(new THREE.BoxGeometry(FT, DH + FT * 2, FD));
-  const frameGeoH = track(new THREE.BoxGeometry(DW + FT * 2, FT, FD));
+  const frameGeoV = track(new RoundedBoxGeometry(FT, DH + FT * 2, FD, 4, 0.03));
+  const frameGeoH = track(new RoundedBoxGeometry(DW + FT * 2, FT, FD, 4, 0.03));
   const left = new THREE.Mesh(frameGeoV, frameMat); left.position.set(-DW / 2 - FT / 2, 0, 0);
   const right = new THREE.Mesh(frameGeoV, frameMat); right.position.set(DW / 2 + FT / 2, 0, 0);
   const top = new THREE.Mesh(frameGeoH, frameMat); top.position.set(0, DH / 2 + FT / 2, 0);
@@ -251,6 +268,8 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   // The light inside the doorway
   const portalMat = track(new THREE.ShaderMaterial({
     transparent: true,
+    // Don't write depth, so the light shafts passing through the doorway don't get cut in a hard line.
+    depthWrite: false,
     uniforms: { uTime: { value: 0 }, uOpen: { value: 0 } },
     vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
     fragmentShader: `
@@ -279,26 +298,26 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   hinge.position.set(-DW / 2, 0, FD / 2 - 0.02);
   door.add(hinge);
   const leafMat = track(new THREE.MeshPhysicalMaterial({ color: 0x1b2440, metalness: 0.35, roughness: 0.35, clearcoat: 1, clearcoatRoughness: 0.15 }));
-  const leafGeo = track(new THREE.BoxGeometry(DW, DH, 0.09));
+  const leafGeo = track(new RoundedBoxGeometry(DW, DH, 0.09, 4, 0.025));
   const leaf = new THREE.Mesh(leafGeo, leafMat);
   leaf.position.set(DW / 2, 0, 0);
   hinge.add(leaf);
   // Panels on the leaf
   const panelMat = track(new THREE.MeshStandardMaterial({ color: 0x243055, metalness: 0.4, roughness: 0.4 }));
-  const panelGeo = track(new THREE.BoxGeometry(DW * 0.72, DH * 0.36, 0.02));
+  const panelGeo = track(new RoundedBoxGeometry(DW * 0.72, DH * 0.36, 0.03, 3, 0.012));
   const p1 = new THREE.Mesh(panelGeo, panelMat); p1.position.set(DW / 2, DH * 0.22, 0.055);
   const p2 = new THREE.Mesh(panelGeo, panelMat); p2.position.set(DW / 2, -DH * 0.22, 0.055);
   hinge.add(p1, p2);
-  const knobGeo = track(new THREE.SphereGeometry(0.075, 24, 16));
-  const knob = new THREE.Mesh(knobGeo, track(new THREE.MeshBasicMaterial({ color: 0xffb547 })));
+  const knobGeo = track(new THREE.SphereGeometry(0.075, 48, 32));
+  const knob = new THREE.Mesh(knobGeo, track(new THREE.MeshStandardMaterial({ color: 0xffb547, metalness: 1, roughness: 0.18, emissive: 0xff8a3a, emissiveIntensity: 0.35 })));
   knob.position.set(DW - 0.24, -0.05, 0.1);
   hinge.add(knob);
 
   // ---------- Doorstep ----------
   const stepMat = track(new THREE.MeshStandardMaterial({ color: 0x1a2134, metalness: 0.6, roughness: 0.35 }));
-  const step1 = new THREE.Mesh(track(new THREE.BoxGeometry(DW + 1.0, 0.16, 1.1)), stepMat);
+  const step1 = new THREE.Mesh(track(new RoundedBoxGeometry(DW + 1.0, 0.16, 1.1, 3, 0.02)), stepMat);
   step1.position.set(0, -DH / 2 - 0.08, 0.45);
-  const step2 = new THREE.Mesh(track(new THREE.BoxGeometry(DW + 1.6, 0.16, 1.0)), stepMat);
+  const step2 = new THREE.Mesh(track(new RoundedBoxGeometry(DW + 1.6, 0.16, 1.0, 3, 0.02)), stepMat);
   step2.position.set(0, -DH / 2 - 0.24, 1.15);
   door.add(step1, step2);
   const stepEdgeMat = track(new THREE.MeshBasicMaterial({ color: 0xff8a4c }));
@@ -324,15 +343,17 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
 
   // Light shafts
   const shaftTexCanvas = document.createElement("canvas");
-  shaftTexCanvas.width = 64; shaftTexCanvas.height = 256;
+  shaftTexCanvas.width = 128; shaftTexCanvas.height = 512;
   const sctx = shaftTexCanvas.getContext("2d")!;
-  const sg = sctx.createLinearGradient(0, 0, 0, 256);
-  sg.addColorStop(0, "rgba(255,200,140,0.9)");
+  const sg = sctx.createLinearGradient(0, 0, 0, 512);
+  // Fade in at the top too, so the shafts never show a hard line across the doorway.
+  sg.addColorStop(0, "rgba(255,200,140,0)");
+  sg.addColorStop(0.18, "rgba(255,200,140,0.9)");
   sg.addColorStop(1, "rgba(255,120,60,0)");
-  sctx.fillStyle = sg; sctx.fillRect(0, 0, 64, 256);
-  const hg = sctx.createLinearGradient(0, 0, 64, 0);
+  sctx.fillStyle = sg; sctx.fillRect(0, 0, 128, 512);
+  const hg = sctx.createLinearGradient(0, 0, 128, 0);
   hg.addColorStop(0, "rgba(0,0,0,1)"); hg.addColorStop(0.5, "rgba(0,0,0,0)"); hg.addColorStop(1, "rgba(0,0,0,1)");
-  sctx.globalCompositeOperation = "destination-out"; sctx.fillStyle = hg; sctx.fillRect(0, 0, 64, 256);
+  sctx.globalCompositeOperation = "destination-out"; sctx.fillStyle = hg; sctx.fillRect(0, 0, 128, 512);
   const shaftTex = track(new THREE.CanvasTexture(shaftTexCanvas));
   const shafts: THREE.Mesh[] = [];
   for (let i = 0; i < 5; i++) {
@@ -346,11 +367,11 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
 
   // Orbit ring behind the door
   const ringMat = track(new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }));
-  const ring = new THREE.Mesh(track(new THREE.TorusGeometry(3.3, 0.012, 8, 160)), ringMat);
+  const ring = new THREE.Mesh(track(new THREE.TorusGeometry(3.3, 0.012, 12, 400)), ringMat);
   ring.rotation.set(1.25, 0.15, 0);
   ring.position.set(0, 0.2, -0.6);
   world.add(ring);
-  const ring2 = new THREE.Mesh(track(new THREE.TorusGeometry(4.1, 0.008, 8, 160)), track(new THREE.MeshBasicMaterial({ color: 0xffb547, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false })));
+  const ring2 = new THREE.Mesh(track(new THREE.TorusGeometry(4.1, 0.008, 12, 480)), track(new THREE.MeshBasicMaterial({ color: 0xffb547, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false })));
   ring2.rotation.set(1.35, -0.25, 0.2);
   ring2.position.set(0, 0.1, -0.6);
   world.add(ring2);
@@ -362,7 +383,7 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   type Card = { mesh: THREE.Mesh; base: THREE.Vector3; phase: number; amp: number; rotY: number };
   const cards: Card[] = [];
   const addCard = (kind: "browser" | "phone" | "stats" | "review", width: number, pos: [number, number, number], rotY: number, phase: number) => {
-    const { texture, aspect } = cardTexture(kind);
+    const { texture, aspect } = cardTexture(kind, cardScale, maxAniso);
     track(texture);
     const mat = track(new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide, toneMapped: false }));
     const mesh = new THREE.Mesh(track(new THREE.PlaneGeometry(width, width / aspect)), mat);
@@ -418,7 +439,7 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
     camera.updateProjectionMatrix();
     const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     // Phones get a little more side room so the floating cards stay on screen.
-    const span = w < 640 ? 8.9 : 7.8;
+    const span = w < 640 ? 8.9 : 8.6;
     fitZ = Math.max(6.6 / (2 * t), span / (2 * t * camera.aspect));
   };
   const ro = new ResizeObserver(resize);
@@ -432,8 +453,25 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   let openT = opts.reducedMotion ? 1 : 0;
   const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
+  // Speed guard: if a slow device can't keep up at full resolution, step it down once or twice.
+  let frames = 0, frameTime = 0;
+  const adapt = (rawDt: number) => {
+    if (pixelRatio <= 1.25 || rawDt > 0.25) return;
+    frames++; frameTime += rawDt;
+    if (frames < 90) return;
+    const avg = frameTime / frames;
+    frames = 0; frameTime = 0;
+    if (avg > 1 / 40) {
+      pixelRatio = Math.max(1.25, pixelRatio * 0.75);
+      renderer.setPixelRatio(pixelRatio);
+      resize();
+    }
+  };
+
   const render = () => {
-    const dt = Math.min(clock.getDelta(), 0.05);
+    const rawDt = clock.getDelta();
+    adapt(rawDt);
+    const dt = Math.min(rawDt, 0.05);
     const t = clock.elapsedTime;
     const motion = opts.reducedMotion ? 0 : 1;
 
@@ -502,6 +540,7 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
       ro.disconnect();
       window.removeEventListener("pointermove", onPointer);
       disposables.forEach((d) => d.dispose());
+      envTex.dispose();
       renderer.dispose();
     },
   };
