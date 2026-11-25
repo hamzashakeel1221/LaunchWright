@@ -21,7 +21,8 @@ function fieldErrors(err: z.ZodError) {
 const hits = new Map<string, number[]>();
 async function tooMany(kind: string, limit = 5, windowMs = 10 * 60 * 1000) {
   const h = await headers();
-  const ip = (h.get("x-forwarded-for") ?? h.get("x-real-ip") ?? "unknown").split(",")[0].trim();
+  // Cloudflare sets cf-connecting-ip itself, so visitors cannot fake it the way they can x-forwarded-for.
+  const ip = (h.get("cf-connecting-ip") ?? h.get("x-forwarded-for") ?? h.get("x-real-ip") ?? "unknown").split(",")[0].trim();
   const key = `${kind}:${ip}`;
   const now = Date.now();
   const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
