@@ -11,17 +11,17 @@ export function ReviewForm() {
 
   if (state?.ok) {
     return (
-      <div className="card p-8 text-center">
-        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-teal/15 text-teal">✓</div>
+      <div className="panel p-8 text-center">
+        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-amber to-flame text-white">✓</div>
         <h3 className="text-xl">Review received</h3>
-        <p className="mt-2 text-muted">{state.message}</p>
+        <p className="mt-2 text-fog">{state.message}</p>
       </div>
     );
   }
 
   const e = state?.errors ?? {};
   return (
-    <form action={action} className="relative space-y-5 rounded-3xl border border-line bg-white p-5 shadow-[0_20px_50px_-30px_rgba(18,33,58,.3)] sm:p-8" noValidate>
+    <form action={action} className="panel relative space-y-5 !rounded-[1.75rem] p-5 sm:p-8" noValidate>
       <Honeypot />
       {state && !state.ok && <FormNotice ok={false} message={state.message} />}
       <div>
@@ -36,7 +36,7 @@ export function ReviewForm() {
               aria-label={`${n} star${n > 1 ? "s" : ""}`}
               onClick={() => setRating(n)}
               onMouseEnter={() => setHover(n)}
-              className="text-flame transition hover:scale-110"
+              className="text-amber transition hover:scale-110"
             >
               <Star className="h-8 w-8" filled={n <= (hover || rating)} />
             </button>
@@ -52,7 +52,7 @@ export function ReviewForm() {
           <FieldError msg={e.name} />
         </div>
         <div>
-          <label className="label" htmlFor="r-biz">Business name <span className="font-normal text-muted">(optional)</span></label>
+          <label className="label" htmlFor="r-biz">Business name <span className="font-normal text-fog">(optional)</span></label>
           <input id="r-biz" name="businessName" className="input" maxLength={120} />
         </div>
       </div>
@@ -63,7 +63,7 @@ export function ReviewForm() {
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <button className="btn-primary" disabled={pending}>{pending ? "Sending…" : "Submit review"}</button>
-        <p className="text-sm text-muted">Reviews are checked before they appear on the site.</p>
+        <p className="text-sm text-fog">Reviews are checked before they appear on the site.</p>
       </div>
     </form>
   );

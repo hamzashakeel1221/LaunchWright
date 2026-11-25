@@ -9,17 +9,17 @@ export function ContactForm() {
 
   if (state?.ok) {
     return (
-      <div className="card p-8 text-center">
-        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-teal/15 text-teal">✓</div>
+      <div className="panel p-8 text-center">
+        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-amber to-flame text-white">✓</div>
         <h3 className="text-xl">Message sent</h3>
-        <p className="mt-2 text-muted">{state.message}</p>
+        <p className="mt-2 text-fog">{state.message}</p>
       </div>
     );
   }
 
   const e = state?.errors ?? {};
   return (
-    <form action={action} className="relative space-y-5 rounded-3xl border border-line bg-white p-5 shadow-[0_20px_50px_-30px_rgba(18,33,58,.3)] sm:p-8" noValidate>
+    <form action={action} className="panel relative space-y-5 !rounded-[1.75rem] p-5 sm:p-8" noValidate>
       <Honeypot />
       {state && !state.ok && <FormNotice ok={false} message={state.message} />}
       <div className="grid gap-5 sm:grid-cols-2">
@@ -57,7 +57,7 @@ export function ContactForm() {
         <textarea id="c-msg" name="message" rows={5} className="input" required maxLength={5000} placeholder="What does your business do, and what should the website include?" />
         <FieldError msg={e.message} />
       </div>
-      <button className="btn-primary w-full sm:w-auto" disabled={pending}>{pending ? "Sending…" : "Send message"}</button>
+      <button className="btn-primary h-13 w-full px-8 sm:w-auto" disabled={pending}>{pending ? "Sending…" : "Send message"}</button>
     </form>
   );
 }

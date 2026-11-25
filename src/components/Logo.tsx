@@ -1,20 +1,32 @@
 export function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill="#FF6B35" />
-      <path d="M35.6 16.6 47.4 28.4 12 52z" fill="#fff" fillOpacity=".35" />
-      <path d="M37.4 18.4 45.6 26.6 18 46z" fill="#fff" fillOpacity=".7" />
-      <circle cx="41.5" cy="22.5" r="8.5" fill="#fff" />
-      <path d="M47 41l1.6 4.4L53 47l-4.4 1.6L47 53l-1.6-4.4L41 47l4.4-1.6z" fill="#12213A" />
+      <defs>
+        <linearGradient id="wd-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#FF8A3D" />
+          <stop offset="1" stopColor="#FF4F2E" />
+        </linearGradient>
+        <linearGradient id="wd-l" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#FFF7E6" />
+          <stop offset="1" stopColor="#FFD9A8" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="15" fill="url(#wd-g)" />
+      <rect x="19" y="12" width="26" height="36" rx="2.5" fill="url(#wd-l)" />
+      <path d="M19 12.6 31 17v32.6L19 48z" fill="#0B1222" />
+      <circle cx="28" cy="33" r="1.6" fill="#FF8A3D" />
+      <path d="M13 53h38" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );
 }
 
 export function Logo({ light = true }: { light?: boolean }) {
   return (
-    <span className={`flex items-center gap-2.5 font-display text-xl font-bold tracking-tight ${light ? "text-white" : "text-ink"}`}>
+    <span className={`flex items-center gap-2.5 font-display text-[1.3rem] font-bold tracking-tight ${light ? "text-white" : "text-ink"}`}>
       <LogoMark />
-      Cometfront
+      <span>
+        Web<span className="text-gradient">Doorstep</span>
+      </span>
     </span>
   );
 }

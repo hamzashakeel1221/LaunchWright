@@ -40,3 +40,33 @@ export const WhatsApp = ({ className = "h-6 w-6" }: P) => (
 export const Star = ({ className = "h-4 w-4", filled = true }: P & { filled?: boolean }) => (
   <svg viewBox="0 0 24 24" className={className} fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
 );
+export const Cart = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
+);
+export const Refresh = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>
+);
+export const Search = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+);
+export const Zap = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+);
+export const Sparkle = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><path d="M12 3l1.9 5.6L19.5 10.5 13.9 12.4 12 18l-1.9-5.6L4.5 10.5l5.6-1.9z" /><path d="M19 3v4M17 5h4" /></svg>
+);
+export const ArrowRight = ({ className = "h-4 w-4" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+);
+export const ArrowUpRight = ({ className = "h-4 w-4" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+);
+export const Clock = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+);
+export const Users = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+);
+export const Door = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17" /><path d="M5 3l7 2.5V21" /><path d="M3 21h18" /><circle cx="10" cy="13" r=".6" fill="currentColor" /></svg>
+);

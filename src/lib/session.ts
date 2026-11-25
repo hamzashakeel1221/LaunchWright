@@ -1,7 +1,7 @@
 // Edge-safe session helpers (used by middleware and server code).
 import { SignJWT, jwtVerify } from "jose";
 
-export const SESSION_COOKIE = "cometfront_admin";
+export const SESSION_COOKIE = "webdoorstep_admin";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
 /**
