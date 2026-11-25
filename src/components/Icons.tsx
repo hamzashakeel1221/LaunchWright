@@ -70,3 +70,9 @@ export const Users = ({ className = "h-5 w-5" }: P) => (
 export const Door = ({ className = "h-5 w-5" }: P) => (
   <svg viewBox="0 0 24 24" className={className} {...base}><path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17" /><path d="M5 3l7 2.5V21" /><path d="M3 21h18" /><circle cx="10" cy="13" r=".6" fill="currentColor" /></svg>
 );
+export const Instagram = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
+);
+export const Facebook = ({ className = "h-5 w-5" }: P) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z" /></svg>
+);

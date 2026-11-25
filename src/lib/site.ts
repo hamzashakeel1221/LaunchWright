@@ -10,6 +10,10 @@ export const site = {
   phoneE164: "+923265477808",
   whatsapp: "923265477808",
   email: "hamzashakeel16829@gmail.com",
+  social: {
+    instagram: "https://www.instagram.com/webdoorstep",
+    facebook: "https://www.facebook.com/profile.php?id=61596719560098",
+  },
   keywords: [
     "website design",
     "website development",

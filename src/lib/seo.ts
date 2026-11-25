@@ -28,6 +28,7 @@ export function organizationSchema() {
     image: `${site.url}/og.png`,
     description: site.description,
     slogan: site.shortTagline,
+    sameAs: [site.social.instagram, site.social.facebook],
     email: site.email,
     telephone: site.phoneE164,
     areaServed: { "@type": "Place", name: "Worldwide" },

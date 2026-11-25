@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { site, whatsappLink, whatsappMessage } from "@/lib/site";
 import { servicesData } from "@/lib/services";
-import { ArrowRight, Mail, Phone, WhatsApp } from "./Icons";
+import { ArrowRight, Facebook, Instagram, Mail, Phone, WhatsApp } from "./Icons";
 
 export function Footer() {
   return (
@@ -40,6 +40,10 @@ export function Footer() {
             <li><a href={`tel:${site.phoneE164}`} className="flex items-center gap-2.5 transition hover:text-white"><Phone className="h-4 w-4 text-amber" /> {site.phoneDisplay}</a></li>
             <li><a href={`mailto:${site.email}`} className="flex items-center gap-2.5 break-all transition hover:text-white"><Mail className="h-4 w-4 flex-none text-cyan" /> {site.email}</a></li>
           </ul>
+          <div className="mt-5 flex gap-3">
+            <a href={site.social.instagram} target="_blank" rel="noopener me" aria-label="WebDoorstep on Instagram" className="grid h-10 w-10 place-items-center rounded-full border border-white/10 transition hover:border-white/30 hover:text-white"><Instagram className="h-5 w-5" /></a>
+            <a href={site.social.facebook} target="_blank" rel="noopener me" aria-label="WebDoorstep on Facebook" className="grid h-10 w-10 place-items-center rounded-full border border-white/10 transition hover:border-white/30 hover:text-white"><Facebook className="h-5 w-5" /></a>
+          </div>
           <p className="mt-5 text-xs">We work with businesses in every country and time zone.</p>
         </div>
       </div>
