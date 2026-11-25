@@ -386,7 +386,7 @@ export default async function Home() {
       </section>
 
       {/* ============ REVIEWS ============ */}
-      <section className="relative py-20 md:py-28">
+      <section className="relative overflow-hidden py-20 md:py-28">
         <div className="absolute top-1/2 left-0 -z-10 h-96 w-96 -translate-y-1/2 rounded-full bg-flame/10 blur-[120px]" />
         <div className="wrap">
           <Reveal className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
