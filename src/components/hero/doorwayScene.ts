@@ -200,7 +200,7 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review", s: number, 
   return { texture: t, aspect: W / H };
 }
 
-export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: boolean; skipIntro?: boolean } = {}): SceneHandle {
+export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: boolean; skipIntro?: boolean; freezeOpen?: number; onFirstFrame?: () => void } = {}): SceneHandle {
   const isSmall = Math.min(window.innerWidth, window.innerHeight) < 640;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   // Render at the screen's real resolution (phones are often 3x), so edges and text stay crisp.
@@ -450,7 +450,11 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   const clock = new THREE.Clock();
   let raf = 0;
   let active = true;
-  let openT = opts.reducedMotion || opts.skipIntro ? 1 : 0;
+  let started = false;
+  let firstDone = false;
+  let disposed = false;
+  const frozen = opts.freezeOpen !== undefined;
+  let openT = frozen ? (opts.freezeOpen as number) : opts.reducedMotion || opts.skipIntro ? 1 : 0;
   const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
   // Speed guard: if a slow device can't keep up at full resolution, step it down once or twice.
@@ -471,9 +475,9 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   const render = () => {
     const rawDt = clock.getDelta();
     adapt(rawDt);
-    const dt = Math.min(rawDt, 0.05);
+    const dt = frozen ? 0 : Math.min(rawDt, 0.05);
     const t = clock.elapsedTime;
-    const motion = opts.reducedMotion ? 0 : 1;
+    const motion = opts.reducedMotion || frozen ? 0 : 1;
 
     // Door opens on load, then breathes a little
     openT = Math.min(1, openT + dt / 2.4);
@@ -519,13 +523,23 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
     world.rotation.y = pointer.x * 0.08 * motion;
 
     renderer.render(scene, camera);
+    if (!firstDone) { firstDone = true; opts.onFirstFrame?.(); }
     if (active) raf = requestAnimationFrame(render);
   };
-  raf = requestAnimationFrame(render);
+  // Compile the shaders in the background (where supported) so the first frame doesn't freeze the page.
+  const begin = () => {
+    if (started || disposed) return;
+    started = true;
+    if (active) raf = requestAnimationFrame(render);
+  };
+  const compileAsync = (renderer as THREE.WebGLRenderer & { compileAsync?: (s: THREE.Object3D, c: THREE.Camera) => Promise<unknown> }).compileAsync;
+  if (compileAsync) compileAsync.call(renderer, scene, camera).then(begin, begin);
+  else begin();
 
   const setActive = (on: boolean) => {
     if (on === active) return;
     active = on;
+    if (!started) return;
     if (on) {
       clock.getDelta();
       raf = requestAnimationFrame(render);
@@ -536,6 +550,7 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
     setActive,
     dispose: () => {
       active = false;
+      disposed = true;
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener("pointermove", onPointer);
