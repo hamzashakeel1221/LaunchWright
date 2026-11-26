@@ -39,7 +39,7 @@ const included = ["Custom design for your brand", "Full development, built mobil
 const care = ["Daily checks that your site is up", "Updates to prices, menus, offers and photos", "Security updates and backups", "Help whenever you need a change"];
 
 const faqs = [
-  { q: "How much does a website cost?", a: "Websites start from $150 during our limited-time launch offer (the regular starting price is $500), and that includes 2 months of free maintenance. Larger or custom sites, such as online stores, are quoted individually. Tell us about your business and we'll send a free quote with no obligation, usually within 24 hours." },
+  { q: "How much does a website cost?", a: "The price depends on the size of the site and the work involved, so we quote each project individually and agree a fixed price before we start. Every website includes 2 months of free maintenance. Tell us about your business and we'll send a free quote with no obligation, usually within 24 hours." },
   { q: "How long does it take to build a website?", a: "It depends on the size of the site. Most small business websites take one to three weeks. You get a clear timeline with your quote, and updates at every step." },
   { q: "Will my website show up on Google?", a: "Every site we build is SEO-ready: fast, mobile-friendly, with keyword-rich titles, structured data and a sitemap submitted to Google Search Console. No one can guarantee first place, but we give your site the best possible start." },
   { q: "What do I need to give you?", a: "Your business name, your logo if you have one, photos, and the details customers need (services, opening hours, location). We can help write the text." },
@@ -322,21 +322,17 @@ export default async function Home() {
           <Reveal className="mx-auto max-w-3xl text-center">
             <span className="eyebrow">Packages</span>
             <h2 className="text-4xl font-bold sm:text-5xl md:text-6xl">Simple, complete, <span className="text-gradient">done for you</span></h2>
-            <p className="mx-auto mt-5 max-w-2xl text-lg text-fog">Websites start from <strong className="text-white">$150</strong> during our launch offer. Bigger or custom sites get a free quote after a short chat about what you need. No hidden costs.</p>
+            <p className="mx-auto mt-5 max-w-2xl text-lg text-fog">Every website is different, so every price is too. Tell us about your business and we send a clear, fixed quote, free and with no obligation. No hidden costs.</p>
           </Reveal>
           <div className="mt-16 grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
             <Reveal>
               <div data-tilt="3" className="ring-glow panel relative flex h-full flex-col overflow-hidden !rounded-[2rem] p-7 sm:p-10">
                 <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-flame/25 blur-3xl" />
                 <div className="absolute -bottom-32 -left-20 h-72 w-72 rounded-full bg-violet/20 blur-3xl" />
-                <span className="relative mb-6 self-start rounded-full bg-gradient-to-r from-amber to-flame px-3.5 py-1 text-xs font-semibold tracking-wider text-white uppercase">Launch offer · limited time</span>
+                <span className="relative mb-6 self-start rounded-full bg-gradient-to-r from-amber to-flame px-3.5 py-1 text-xs font-semibold tracking-wider text-white uppercase">Free quote · fixed price</span>
                 <h3 className="relative text-3xl font-bold sm:text-4xl">Your complete website</h3>
                 <p className="relative mt-3 text-fog">Everything you need to get your business online and found.</p>
-                <p className="relative mt-6 mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="text-lg text-fog line-through decoration-flame decoration-2"><span className="sr-only">Regular price </span>$500</span>
-                  <span className="text-gradient text-5xl font-extrabold sm:text-6xl"><span className="sr-only">Launch price </span>$150</span>
-                  <span className="text-sm font-semibold tracking-wide text-fog uppercase">starting price · one-time</span>
-                </p>
+                <p className="relative mt-6 mb-8 text-lg font-semibold text-white">Fixed price, agreed before we start. <span className="text-fog font-normal">Simple sites are quick and affordable; bigger or custom sites are quoted after a short chat.</span></p>
                 <ul className="relative mb-8 space-y-3.5">
                   {included.map((t) => (
                     <li key={t} className="flex gap-3"><span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-gradient-to-br from-amber to-flame text-white"><Check className="h-3.5 w-3.5" /></span>{t}</li>
@@ -346,7 +342,7 @@ export default async function Home() {
                     <span><strong className="text-amber">2 months of maintenance included:</strong> fixes, small text and photo updates, and checks that your site is running.</span>
                   </li>
                 </ul>
-                <Link href="/contact" data-magnetic className="btn-primary relative mt-auto h-14 w-full text-base sm:w-auto sm:self-start sm:px-8">Claim the $150 launch price <ArrowRight /></Link>
+                <Link href="/contact" data-magnetic className="btn-primary relative mt-auto h-14 w-full text-base sm:w-auto sm:self-start sm:px-8">Get your free quote <ArrowRight /></Link>
               </div>
             </Reveal>
             <Reveal delay={100}>
