@@ -6,11 +6,11 @@ const isDev = process.env.NODE_ENV !== "production";
 // so 'unsafe-inline' stays on for those; everything else may only load from this site.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  `connect-src 'self'${isDev ? " ws:" : ""}`,
+  `connect-src 'self' https://cloudflareinsights.com${isDev ? " ws:" : ""}`,
   "media-src 'self'",
   "worker-src 'self' blob:",
   "object-src 'none'",

@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cometfront",
-  "main": ".open-next/worker.js",
+  "main": "worker.mjs",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -15,6 +15,8 @@
     }
   ],
   "observability": { "enabled": true },
+  // Run the worker close to the database so each query is fast.
+  "placement": { "mode": "smart" },
   // Not secret: the admin login email. Passwords and the database URL are secrets set in the dashboard.
   "vars": { "ADMIN_EMAIL": "hamzashakeel16829@gmail.com" },
   // Keep variables and secrets set in the Cloudflare dashboard on every deploy.

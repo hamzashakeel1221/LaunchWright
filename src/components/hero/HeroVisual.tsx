@@ -33,6 +33,10 @@ export function HeroVisual() {
     const canvas = canvasRef.current;
     const box = boxRef.current;
     if (!canvas || !box || !hasWebGL()) return;
+    // Slow connections and low-power phones keep the lightweight static hero, so the page stays quick.
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string }; deviceMemory?: number };
+    const slow = nav.connection?.saveData || /(^|-)(slow-)?[23]g$/.test(nav.connection?.effectiveType ?? "") || (nav.deviceMemory ?? 8) <= 2 || (navigator.hardwareConcurrency ?? 8) <= 2;
+    if (slow) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let handle: { dispose: () => void; setActive: (on: boolean) => void } | null = null;
     let cancelled = false;

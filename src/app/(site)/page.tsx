@@ -392,14 +392,14 @@ export default async function Home() {
           <Reveal className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
               <span className="eyebrow">Reviews</span>
-              <h2 className="text-4xl font-bold sm:text-5xl md:text-6xl">What clients say</h2>
+              <h2 className="text-4xl font-bold sm:text-5xl md:text-6xl">{reviews.length > 0 ? "What clients say" : "Be one of our first clients"}</h2>
               {reviewStats.count > 0 && (
                 <p className="mt-4 flex items-center gap-3 text-fog">
                   <Stars rating={Math.round(reviewStats.average)} /> {reviewStats.average.toFixed(1)} out of 5 from {reviewStats.count} review{reviewStats.count === 1 ? "" : "s"}
                 </p>
               )}
             </div>
-            <Link href="/reviews#write" className="btn-outline">Write a review</Link>
+            {reviews.length > 0 && <Link href="/reviews#write" className="btn-outline">Write a review</Link>}
           </Reveal>
           {reviews.length > 0 ? (
             <div className="no-scrollbar -mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0">
@@ -408,14 +408,51 @@ export default async function Home() {
               ))}
             </div>
           ) : (
-            <div className="panel mt-12 p-10 text-center text-fog">
-              No reviews yet. Worked with us? <Link href="/reviews#write" className="font-semibold text-amber underline">Be the first to leave one.</Link>
-            </div>
+            <Reveal className="panel mt-12 grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-amber/30 bg-amber/10 px-3 py-1 text-xs font-semibold tracking-widest text-amber uppercase"><Sparkle className="h-3.5 w-3.5" /> Founding clients</span>
+                <h3 className="mt-5 text-2xl font-bold sm:text-3xl">WebDoorstep is new, and we&apos;re taking on our first clients now.</h3>
+                <p className="mt-4 text-fog">That means you get the founder&apos;s full attention on your project. See the quality for yourself in <Link href="/projects" className="font-semibold text-amber underline underline-offset-4">our work</Link>, then tell us about your business.</p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Link href="/contact" className="btn-primary">Get a free quote <ArrowRight className="h-4 w-4" /></Link>
+                  <a href={whatsappLink(whatsappMessage)} target="_blank" rel="noopener" className="btn-outline"><WhatsApp className="h-4 w-4" /> Chat on WhatsApp</a>
+                </div>
+              </div>
+              <ul className="grid gap-3">
+                {[
+                  "Free quote with no obligation, usually within 24 hours",
+                  "You work directly with the person building your site",
+                  "Mobile-first, fast and SEO-ready from day one",
+                  "2 months of maintenance included free after launch",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-3 rounded-2xl border border-white/[.07] bg-white/[.03] p-4 text-white/90">
+                    <Check className="mt-0.5 h-5 w-5 flex-none text-amber" /> <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           )}
         </div>
       </section>
 
       {/* ============ FAQ ============ */}
+      <section id="about" className="relative scroll-mt-24 py-20 md:py-28">
+        <div className="wrap">
+          <Reveal className="panel grid gap-8 p-8 sm:p-10 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-12">
+            <div className="grid h-24 w-24 flex-none place-items-center rounded-3xl bg-gradient-to-br from-amber to-flame text-4xl font-extrabold text-white shadow-lg shadow-flame/20 sm:h-28 sm:w-28" aria-hidden="true">H</div>
+            <div>
+              <span className="eyebrow">About us</span>
+              <h2 className="text-3xl font-bold sm:text-4xl">Hi, I&apos;m Hamza, the founder of WebDoorstep.</h2>
+              <p className="mt-4 max-w-3xl text-fog">I started WebDoorstep because too many good small businesses lose customers to slow, outdated or missing websites. I design, build and launch every site myself, so you talk to the person doing the work, not a sales team. You get a clear quote, a design you approve before anything is built, and 2 months of free maintenance after launch.</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href={whatsappLink(whatsappMessage)} target="_blank" rel="noopener" className="btn-outline"><WhatsApp className="h-4 w-4" /> Message me on WhatsApp</a>
+                <Link href="/contact" className="btn-primary">Get a free quote <ArrowRight className="h-4 w-4" /></Link>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       <section id="faq" className="relative scroll-mt-24 py-20 md:py-28">
         <div className="wrap grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
           <Reveal>

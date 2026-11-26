@@ -40,7 +40,7 @@ export default async function ReviewsPage() {
               {reviews.map((r, i) => <Reveal key={r.id} delay={(i % 3) * 80}><ReviewCard r={r} /></Reveal>)}
             </div>
           ) : (
-            <div className="panel p-10 text-center text-fog">No reviews yet. Be the first to leave one below.</div>
+            <div className="panel p-10 text-center text-fog">We&apos;re a new studio, so there are no reviews yet. If we&apos;ve built a website for you, we&apos;d love to hear how it went below.</div>
           )}
         </div>
       </section>

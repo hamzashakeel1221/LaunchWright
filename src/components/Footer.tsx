@@ -50,7 +50,11 @@ export function Footer() {
       <div className="relative border-t border-white/[.06]">
         <div className="wrap flex flex-wrap items-center justify-between gap-3 py-6 text-xs">
           <span>© {new Date().getFullYear()} {site.name}. Website design &amp; development for small businesses worldwide.</span>
-          <Link href="/admin" rel="nofollow" className="transition hover:text-white">Admin</Link>
+          <span className="flex items-center gap-5">
+            <Link href="/privacy" className="transition hover:text-white">Privacy</Link>
+            <Link href="/terms" className="transition hover:text-white">Terms</Link>
+            <Link href="/admin" rel="nofollow" className="transition hover:text-white">Admin</Link>
+          </span>
         </div>
       </div>
     </footer>

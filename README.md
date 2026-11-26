@@ -38,7 +38,7 @@ npm run dev                   # http://localhost:3000  (admin at /admin)
 3. Add `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (or `ADMIN_PASSWORD_HASH`) and `SESSION_SECRET` twice: as **build variables** (the build runs migrations) and as **variables and secrets** of the Worker (used at runtime).
 4. When you buy a domain, add it under the Worker's *Settings → Domains & Routes*.
 
-Pages that show projects and reviews are rendered fresh on every request, so admin changes show up immediately.
+Pages that show projects and reviews are rendered on demand and kept in Cloudflare's edge cache for about a minute (see `edge-cache.mjs` and `worker.mjs`), so they open instantly and admin changes show up within about a minute. `wrangler.jsonc` points at `worker.mjs`, which wraps the generated OpenNext worker, so run the build before `wrangler deploy`.
 
 `netlify.toml` is kept so the old Netlify deploy keeps working until it is switched off.
 
