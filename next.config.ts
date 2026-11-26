@@ -44,6 +44,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
+      // Hero pictures rarely change, so let browsers keep them for a week.
+      { source: "/hero/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }] },
       // Keep the admin area out of search engines and browser caches.
       {
         source: "/admin/:path*",
