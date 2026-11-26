@@ -31,6 +31,7 @@ export default async function ProjectPage({ params }: Props) {
         </div>
         <h1 className="mt-3 text-4xl font-bold md:text-6xl">{p.title}</h1>
         {p.isSample && <p className="mt-3 text-sm text-fog">This is a sample design made to show our work. It is not a client website.</p>}
+        {!p.isSample && <p className="mt-3 text-sm text-fog">A real website designed and built by WebDoorstep.</p>}
         <div className="panel relative mt-10 overflow-hidden p-2">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2rem] bg-night-3">
             <ProjectCover imageId={p.imageId} title={p.title} priority />

@@ -148,10 +148,10 @@ export const servicesData: Service[] = [
     icon: "shield",
     metaTitle: "Website Maintenance Services | Updates, Security & Support",
     metaDescription:
-      "Website maintenance for small businesses: daily checks, updates, security, backups and changes whenever you need them. 2 months included with every WebDoorstep website.",
+      "Website maintenance for small businesses: daily checks, updates, security, backups and changes whenever you need them. Free maintenance included with every WebDoorstep website.",
     h1: "Website care and maintenance, so you can focus on your business",
     intro:
-      "Every website needs care after launch: new prices, new photos, security updates and someone to call when something needs changing. Every WebDoorstep website includes 2 months of maintenance, and you can keep us on after that.",
+      "Every website needs care after launch: new prices, new photos, security updates and someone to call when something needs changing. Every WebDoorstep website includes free maintenance after launch (1 month with the launch offer, 2 months at the regular price), and you can keep us on after that.",
     points: [
       { title: "Always online", text: "We check that your website is up and working, and fix problems before your customers notice." },
       { title: "Changes on request", text: "Send a WhatsApp message with new prices, offers, menus or photos and we update your site." },
@@ -161,8 +161,8 @@ export const servicesData: Service[] = [
     included: ["Uptime checks", "Content and photo updates", "Security updates", "Backups", "Small fixes and improvements", "Help whenever you need it"],
     idealFor: ["Busy business owners", "Sites with changing prices, menus or offers", "Anyone who wants peace of mind"],
     faqs: [
-      { q: "What is included in the free 2 months?", a: "Fixes, small text and photo updates, and regular checks that your site is running." },
-      { q: "What happens after 2 months?", a: "Your website stays online. You can choose ongoing care, or simply ask us for changes when you need them." },
+      { q: "What is included in the free maintenance?", a: "Fixes, small text and photo updates, and regular checks that your site is running." },
+      { q: "What happens after the free maintenance ends?", a: "Your website stays online. You can choose ongoing care, or simply ask us for changes when you need them." },
       { q: "Can you maintain a website you didn't build?", a: "Often, yes. Send us the link and we'll tell you what's possible." },
     ],
   },

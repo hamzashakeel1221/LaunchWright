@@ -7,7 +7,7 @@ Built with **Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · MySQL (P
 ## Features
 
 **Public site**
-- Home: headline offer, how it works (design → develop → test → deploy), packages (no prices, 2 months maintenance included, optional ongoing care), latest projects, worldwide section, approved reviews, contact.
+- Home: headline offer, how it works (design → develop → test → deploy), packages ($150 launch price with 1 month of maintenance, regular $500 with 2 months, optional ongoing care), latest projects, worldwide section, approved reviews, contact.
 - `/projects` and `/projects/[slug]`: projects added from the admin panel, with a "Sample" label where set.
 - `/reviews`: approved reviews with average rating, plus a form anyone can use. New reviews stay hidden until the admin approves them.
 - `/contact`: contact form (saved to the admin panel), WhatsApp, phone and email.
