@@ -9,7 +9,7 @@ export const site = {
   phoneDisplay: "+92 326 5477808",
   phoneE164: "+923265477808",
   whatsapp: "923265477808",
-  email: "hamzashakeel16829@gmail.com",
+  email: "hamza@webdoorstep.com",
   social: {
     instagram: "https://www.instagram.com/webdoorstep",
     facebook: "https://www.facebook.com/profile.php?id=61596719560098",
