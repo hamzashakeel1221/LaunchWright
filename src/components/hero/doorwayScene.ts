@@ -200,7 +200,7 @@ function cardTexture(kind: "browser" | "phone" | "stats" | "review", s: number, 
   return { texture: t, aspect: W / H };
 }
 
-export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: boolean } = {}): SceneHandle {
+export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: boolean; skipIntro?: boolean } = {}): SceneHandle {
   const isSmall = Math.min(window.innerWidth, window.innerHeight) < 640;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   // Render at the screen's real resolution (phones are often 3x), so edges and text stay crisp.
@@ -450,7 +450,7 @@ export function mountDoorway(canvas: HTMLCanvasElement, opts: { reducedMotion?: 
   const clock = new THREE.Clock();
   let raf = 0;
   let active = true;
-  let openT = opts.reducedMotion ? 1 : 0;
+  let openT = opts.reducedMotion || opts.skipIntro ? 1 : 0;
   const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
   // Speed guard: if a slow device can't keep up at full resolution, step it down once or twice.
