@@ -21,7 +21,7 @@ export default async function ProjectsPage() {
       <PageHero
         eyebrow="Our work"
         title={<>Websites we&apos;ve <span className="text-gradient">designed &amp; built</span></>}
-        lead="Projects marked “Sample” are designs we made to show our work. They are not client websites."
+        lead={projects.some((p) => p.isSample) ? "Projects marked “Sample” are designs we made to show our work. They are not client websites." : "A selection of websites we have designed and built, each one fast, mobile-friendly and made to bring in customers."}
         crumbs={[{ name: "Home", href: "/" }, { name: "Our work", href: "/projects" }]}
       />
       <section className="pb-24 md:pb-32">
