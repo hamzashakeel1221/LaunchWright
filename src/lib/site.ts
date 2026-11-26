@@ -5,7 +5,7 @@ export const site = {
   tagline: "Website design & development for small businesses",
   shortTagline: "Websites that bring customers to your doorstep",
   description:
-    "WebDoorstep is a website design and development agency for small businesses worldwide. We design, build, test and launch fast, mobile-friendly, SEO-ready websites, with free maintenance included. Get a free quote.",
+    "WebDoorstep is a website design and development agency for small businesses worldwide. We design, build, test and launch fast, mobile-friendly, SEO-ready websites, with 2 months of maintenance included. Get a free quote.",
   phoneDisplay: "+92 326 5477808",
   phoneE164: "+923265477808",
   whatsapp: "923265477808",

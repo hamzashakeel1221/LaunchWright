@@ -39,7 +39,7 @@ export default function TermsPage() {
           </div>
           <div>
             <h2>Maintenance</h2>
-            <p>New websites include free maintenance after launch: 1 month under the launch offer and 2 months at the regular price, as described on our site and in your quote. After that, ongoing care is optional and quoted separately.</p>
+            <p>New websites include 2 months of maintenance after launch, as described on our site and in your quote. After that, ongoing care is optional and quoted separately.</p>
           </div>
           <div>
             <h2>Our responsibility</h2>

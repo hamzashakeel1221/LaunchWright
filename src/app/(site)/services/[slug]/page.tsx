@@ -70,7 +70,7 @@ export default async function ServicePage({ params }: Props) {
                 {s.included.map((x) => (
                   <li key={x} className="flex gap-3"><span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-gradient-to-br from-amber to-flame text-white"><Check className="h-3.5 w-3.5" /></span>{x}</li>
                 ))}
-                <li className="flex gap-3 sm:col-span-2"><span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-white text-flame"><Check className="h-3.5 w-3.5" /></span><span><strong className="text-amber">Plus free maintenance</strong> after launch: 1 month with the launch offer, 2 months at the regular price.</span></li>
+                <li className="flex gap-3 sm:col-span-2"><span className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-full bg-white text-flame"><Check className="h-3.5 w-3.5" /></span><span><strong className="text-amber">Plus 2 months of free maintenance</strong> with every new website.</span></li>
               </ul>
             </div>
           </Reveal>
