@@ -48,6 +48,17 @@ export async function submitReview(_prev: FormState, formData: FormData): Promis
   return { ok: true, message: "Thank you! Your review will appear on the site once it's approved." };
 }
 
+/** Cold sales pitches (SEO, "rank higher", price lists) that reach the form from mass-mailing services. */
+const PITCH = [
+  /\bseo\b/i, /search engine optimi[sz]ation/i, /rank(ing)? (higher|on google|among|at the top)/i, /top search results/i,
+  /(increase|improve|grow) your (online )?(visibility|traffic|ranking)/i, /quote (&|and|&amp;) price list/i,
+  /(chatgpt|perplexity|gemini).{0,60}(rank|visibility|presence)/i, /struggling to appear/i, /\bguest post/i, /\bbacklinks?\b/i,
+  /call with your phone number/i, /reply to this email with your phone/i, /lack of proper/i,
+];
+function looksLikePitch(text: string) {
+  return PITCH.some((re) => re.test(text));
+}
+
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Please enter your name.").max(100),
   email: z.string().trim().email("Please enter a valid email address.").max(190),
@@ -62,6 +73,7 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
   if (formData.get("website")) return { ok: true, message: "Thanks! We'll get back to you soon." }; // honeypot
   const parsed = contactSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { ok: false, message: "Please fix the highlighted fields.", errors: fieldErrors(parsed.error) };
+  if (looksLikePitch(`${parsed.data.message} ${parsed.data.businessName ?? ""}`)) return { ok: true, message: "Thanks! Your message has been sent. We'll get back to you within 24 hours." }; // sales pitch, dropped silently
   if (await tooMany("contact", 5)) return { ok: false, message: "Too many messages from your connection. Please try again later or use WhatsApp." };
 
   await prisma.contactMessage.create({ data: parsed.data });
