@@ -14,6 +14,8 @@
       "service": "cometfront"
     }
   ],
+  // Lets the edge cache keep pages from different deploys apart.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
   "observability": { "enabled": true },
   // Run the worker close to the database so each query is fast.
   "placement": { "mode": "smart" },

@@ -25,10 +25,12 @@ async function digest(text) {
   return [...new Uint8Array(buf)].slice(0, 12).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function cacheKey(request) {
+// Each deploy has its own chunk files and form action ids, so cached pages must never cross deploys.
+async function cacheKey(request, env) {
+  const version = env?.CF_VERSION_METADATA?.id || "dev";
   const url = new URL(request.url);
   const path = url.pathname.length > 1 ? url.pathname.replace(/\/$/, "") : url.pathname;
-  return new Request(`${url.origin}/__edge-cache${path}?v=${await digest(variantOf(request))}`, { method: "GET" });
+  return new Request(`${url.origin}/__edge-cache${path}?v=${await digest(variantOf(request))}&d=${version}`, { method: "GET" });
 }
 
 function storable(response) {
@@ -55,7 +57,7 @@ export function withEdgeCache(inner, getCache = () => globalThis.caches?.default
       if (!cache || request.method !== "GET" || !isCacheablePath(url.pathname) || request.headers.has("authorization")) {
         return inner.fetch(request, env, ctx);
       }
-      const key = await cacheKey(request);
+      const key = await cacheKey(request, env);
 
       const render = async (req) => {
         const res = await inner.fetch(req, env, ctx);
