@@ -48,7 +48,7 @@ export function Footer() {
         </div>
       </div>
       <div className="relative border-t border-white/[.06]">
-        <div className="wrap flex flex-wrap items-center justify-between gap-3 py-6 text-xs">
+        <div className="wrap flex flex-wrap items-center justify-between gap-3 pt-6 pb-28 text-xs md:pb-8 md:pr-24">
           <span>© {new Date().getFullYear()} {site.name}. Website design &amp; development for small businesses worldwide.</span>
           <span className="flex items-center gap-5">
             <Link href="/privacy" className="transition hover:text-white">Privacy</Link>
